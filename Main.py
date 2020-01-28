@@ -2,40 +2,81 @@
 # * 2020 Juan Sebastián Vargas Molano j.sevamo@gmail.com
 # *******************************************************/
 
-# importing the 3D Vector class called Vec3 that is in another file called Vec3.py
 from Vec3 import Vec3 as vec3
+from Ray import Ray as ray
+
+
+# Returns a Vector3D with the color of the pixel based on where the ray is.
+def Color(r: ray):
+    # We first get the direction of the ray, make it a unit vector.
+    Direction: vec3 = r.GetDirection
+    Direction.MakeUnitVector()
+    unitDirection: vec3 = Direction
+    # Now we create a variable t. We make a standard graphics trick in which we take the unit direction,
+    # add one and multiply by 0.5. This is to have 0 < t < 1 instead of -1 < t < 1
+    # t starts with high values and decreases as the ray goes down the image with it's "y" value.
+    t: float = 0.5 * (unitDirection.y + 1)
+    # Color white to use
+    color1: vec3 = vec3(1.0, 1.0, 1.0)
+    # Color blueish to use
+    color2: vec3 = vec3(0.5, 0.7, 1.0)
+
+    # We make a linear interpolation between the two colors based on the value of t using (1-t)A + tB
+    return color1 * (1.0 - t) + color2 * t
 
 
 # Main function for the raytracer
-def main():
+def Main():
     # This is how we can create a ppm image to write.
     outputImage = open("renderedImage.ppm", "w+")
 
     # width (nx) and height (ny) of the output image.
-    nx: int = 200
-    ny: int = 100
+    nx: int = 800
+    ny: int = 400
 
     # create a ppm image header based on this: https://en.wikipedia.org/wiki/Netpbm#File_formats
-    print("P3\n" + str(nx) + " " + str(ny) + "\n255\n")
+    # print("P3\n" + str(nx) + " " + str(ny) + "\n255\n")
     outputImage.write("P3\n" + str(nx) + " " + str(ny) + "\n255\n")
+
+    lowerLeftCorner: vec3 = vec3(-2.0, -1.0, -1.0)
+    horizontalSize: vec3 = vec3(4.0, 0.0, 0.0)
+    verticalSize: vec3 = vec3(0.0, 2.0, 0.0)
+    originOfCamera: vec3 = vec3(0.0, 0.0, 0.0)
 
     # The for loop that writes the pixels of the image. It writes from left to right
     # and then from top to bottom.
     for j in range(ny, 0, -1):
         for i in range(0, nx, 1):
-            # Just random numbers for now to create an image.
+            # U and V are vectors inside de image plane. They go from 0 to 1.
 
-            col = vec3(i/nx, j/ny, 0.8)
+            # If U is 0 and V is 1, it means we are pointing are the top left corner of the image plane.
+
+            # They are necessary to move the ray through each pixel, as with each iteration in the for loop,
+            # they change values.
+
+            u: float = i / nx
+            v: float = j / ny
+
+            # Next is the magic formula that moves the Ray through all the pixels of the image.
+
+            # We give the ray it's origin, but then here's the good part:
+            # for the Direction, we start with the lower left corner that was set before,
+            # but then we add to this position the horizontal size of the plane time u.
+            # This is crucial because since U goes from 0 to 1, it effectively makes it so
+            # we do indeed go through the whole plane.
+            # Same goes for vertical size time V.
+            r: ray = ray(originOfCamera, lowerLeftCorner + horizontalSize * u + verticalSize * v)
+            col: vec3 = Color(r)
 
             ir: int = int(255.99 * col.r)
             ig: int = int(255.99 * col.g)
             ib: int = int(255.99 * col.b)
-            print(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
+            # print(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
             outputImage.write(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
 
     # Makes sure to close the output image.
     outputImage.close()
+    print("Image Rendered Correctly!")
 
 
-main()
-
+Main()
