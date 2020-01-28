@@ -38,3 +38,11 @@ def main():
 
 
 main()
+
+a = vec3(1,2,3)
+b = vec3(1,5,7)
+c = vec3.DotProduct(a, b)
+d = vec3.CrossProduct(a,b)
+
+
+print(d)

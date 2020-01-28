@@ -2,7 +2,6 @@ import math
 
 
 class Vec3:
-
     # This are the variables that will hold the 3 numbers for the Vector 3 class.
     q1: float = None
     q2: float = None
@@ -60,7 +59,41 @@ class Vec3:
     def __str__(self):
         return "(" + str(self.q1) + ", " + str(self.q2) + ", " + str(self.q3) + ")"
 
-    # Overloading for addition
+    # Overloading for addition, substraction, multiplication (vector and scalar) and division (vector and scalar)
     def __add__(self, other):
         if isinstance(other, Vec3):
             return Vec3(self.q1 + other.q1, self.q2 + other.q2, self.q3 + other.q3)
+
+    def __sub__(self, other):
+        if isinstance(other, Vec3):
+            return Vec3(self.q1 - other.q1, self.q2 - other.q2, self.q3 - other.q3)
+
+    def __mul__(self, other):
+        if isinstance(other, Vec3):
+            return Vec3(self.q1 * other.q1, self.q2 * other.q2, self.q3 * other.q3)
+        elif isinstance(other, float):
+            return Vec3(self.q1 * other, self.q2 * other, self.q3 * other)
+        elif isinstance(other, int):
+            return Vec3(self.q1 * other, self.q2 * other, self.q3 * other)
+
+    def __truediv__(self, other):
+        if isinstance(other, Vec3):
+            return Vec3(self.q1 / other.q1, self.q2 / other.q2, self.q3 / other.q3)
+        elif isinstance(other, float):
+            return Vec3(self.q1 / other, self.q2 / other, self.q3 / other)
+        elif isinstance(other, int):
+            return Vec3(self.q1 / other, self.q2 / other, self.q3 / other)
+
+    # Dot product
+    def DotProduct(v1, v2):
+        if isinstance(v1, Vec3):
+            if isinstance(v2, Vec3):
+                return v1.q1 * v2.q1 + v1.q2 * v2.q2 + v1.q3 * v2.q3
+
+    # Cross product
+    def CrossProduct(v1, v2):
+        if isinstance(v1, Vec3):
+            if isinstance(v2, Vec3):
+                return Vec3(v1.q2 * v2.q3 - v1.q3 * v2.q2,
+                            v1.q3 * v2.q1 - v1.q1 * v2.q3,
+                            v1.q1 * v2.q2 - v1.q2 * v2.q1)
