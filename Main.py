@@ -2,6 +2,8 @@
 # * 2020 Juan Sebastián Vargas Molano j.sevamo@gmail.com
 # *******************************************************/
 
+# importing the 3D Vector class called Vec3 that is in another file called Vec3.py
+from Vec3 import Vec3
 
 # Main function for the raytracer
 def main():
@@ -20,7 +22,7 @@ def main():
     # and then from top to bottom.
     for j in range(ny, 0, -1):
         for i in range(0, nx, 1):
-            #Just random numbers for now to create an image.
+            # Just random numbers for now to create an image.
             r: float = i / nx
             g: float = j / ny
             b: float = 0.2
@@ -35,3 +37,5 @@ def main():
 
 
 main()
+
+
