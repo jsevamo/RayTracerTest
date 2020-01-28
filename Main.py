@@ -3,7 +3,8 @@
 # *******************************************************/
 
 # importing the 3D Vector class called Vec3 that is in another file called Vec3.py
-from Vec3 import Vec3
+from Vec3 import Vec3 as vec3
+
 
 # Main function for the raytracer
 def main():
@@ -37,5 +38,3 @@ def main():
 
 
 main()
-
-
