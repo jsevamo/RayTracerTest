@@ -24,12 +24,12 @@ def main():
     for j in range(ny, 0, -1):
         for i in range(0, nx, 1):
             # Just random numbers for now to create an image.
-            r: float = i / nx
-            g: float = j / ny
-            b: float = 0.2
-            ir: int = int(255.99 * r)
-            ig: int = int(255.99 * g)
-            ib: int = int(255.99 * b)
+
+            col = vec3(i/nx, j/ny, 0.8)
+
+            ir: int = int(255.99 * col.r)
+            ig: int = int(255.99 * col.g)
+            ib: int = int(255.99 * col.b)
             print(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
             outputImage.write(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
 
@@ -39,10 +39,3 @@ def main():
 
 main()
 
-a = vec3(1,2,3)
-b = vec3(1,5,7)
-c = vec3.DotProduct(a, b)
-d = vec3.CrossProduct(a,b)
-
-
-print(d)
