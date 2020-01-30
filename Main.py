@@ -7,8 +7,32 @@ from RayTracerTest.Vec3 import Vec3 as vec3
 from RayTracerTest.Ray import Ray as ray
 
 
+def Hit_Sphere(center: vec3, radius: float, r: ray):
+    """
+
+    :rtype: bool
+    """
+    oc: vec3 = r.GetOrigin - center
+    a: float = vec3.DotProduct(r.GetDirection, r.GetDirection)
+    b: float = 2.0 * vec3.DotProduct(oc, r.GetDirection)
+    c: float = vec3.DotProduct(oc, oc) - radius * radius
+    discriminant: float = b * b - 4 * a * c
+    if discriminant > 0:
+        return True
+    else:
+        return False
+
+
 # Returns a Vector3D with the color of the pixel based on where the ray is.
 def Color(r: ray):
+    """
+
+    :rtype: Vec3
+
+    """
+    if Hit_Sphere(vec3(0, 0, -1), 0.5, r):
+        return vec3(1, 0, 0)
+
     # We first get the direction of the ray, make it a unit vector.
     Direction: vec3 = r.GetDirection
     Direction.MakeUnitVector()
@@ -32,8 +56,8 @@ def Main():
     outputImage = open("renderedImage.ppm", "w+")
 
     # width (nx) and height (ny) of the output image.
-    nx: int = 800
-    ny: int = 400
+    nx: int = 400
+    ny: int = 200
 
     # create a ppm image header based on this: https://en.wikipedia.org/wiki/Netpbm#File_formats
     # print("P3\n" + str(nx) + " " + str(ny) + "\n255\n")
