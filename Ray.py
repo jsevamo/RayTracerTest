@@ -25,4 +25,4 @@ class Ray:
         return self.B
 
     def PointAtParameter(self,  t: float):
-        return self.A + t*self.B
+        return self.A + t*self.B 
