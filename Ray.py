@@ -23,3 +23,6 @@ class Ray:
     @property
     def GetDirection(self):
         return self.B
+
+    def PointAtParameter(self,  t: float):
+        return self.A + t*self.B

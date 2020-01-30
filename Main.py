@@ -5,6 +5,7 @@ from PIL import Image
 import cv2
 from RayTracerTest.Vec3 import Vec3 as vec3
 from RayTracerTest.Ray import Ray as ray
+from playsound import playsound
 
 
 def Hit_Sphere(center: vec3, radius: float, r: ray):
@@ -24,7 +25,7 @@ def Hit_Sphere(center: vec3, radius: float, r: ray):
 
 
 # Returns a Vector3D with the color of the pixel based on where the ray is.
-def Color(r: ray):
+def GetColorOfPixels(r: ray):
     """
 
     :rtype: Vec3
@@ -91,7 +92,7 @@ def Main():
             # we do indeed go through the whole plane.
             # Same goes for vertical size time V.
             r: ray = ray(originOfCamera, lowerLeftCorner + horizontalSize * u + verticalSize * v)
-            col: vec3 = Color(r)
+            col: vec3 = GetColorOfPixels(r)
 
             ir: int = int(255.99 * col.r)
             ig: int = int(255.99 * col.g)
@@ -101,8 +102,11 @@ def Main():
 
     # Makes sure to close the output image.
     outputImage.close()
-    print("Image Rendered Correctly!")
+    print("Image Rendered Correctly! Success!")
+    print("The Rendering engine works!")
+    print("Rejoice!")
     ShowImage()
+    playsound('victory.mp3')
 
 
 # Uses OpenCV to change the format of the rendered image from PPM to JPG, and then uses Pillow (PIL) to show it.
