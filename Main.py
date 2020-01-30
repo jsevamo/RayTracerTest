@@ -1,9 +1,10 @@
 # /*******************************************************
 # * 2020 Juan Sebastián Vargas Molano j.sevamo@gmail.com
 # *******************************************************/
-
-from Vec3 import Vec3 as vec3
-from Ray import Ray as ray
+from PIL import Image
+import cv2
+from RayTracerTest.Vec3 import Vec3 as vec3
+from RayTracerTest.Ray import Ray as ray
 
 
 # Returns a Vector3D with the color of the pixel based on where the ray is.
@@ -77,6 +78,15 @@ def Main():
     # Makes sure to close the output image.
     outputImage.close()
     print("Image Rendered Correctly!")
+    ShowImage()
+
+
+# Uses OpenCV to change the format of the rendered image from PPM to JPG, and then uses Pillow (PIL) to show it.
+def ShowImage():
+    i = cv2.imread('renderedImage.ppm')
+    cv2.imwrite('renderedImage.jpg', i)
+    img = Image.open('renderedImage.jpg')
+    img.show()
 
 
 Main()

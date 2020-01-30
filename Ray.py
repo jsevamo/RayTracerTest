@@ -4,7 +4,8 @@
 # The ray parameter t is a real number .
 # Plug in a different t and p(t) moves the point along the ray.
 
-from Vec3 import Vec3 as vec3
+from RayTracerTest.Vec3 import Vec3 as vec3
+
 
 # The ray class has two vectors, the origin and the direction of the ray
 class Ray:
