@@ -106,7 +106,10 @@ def Main():
     print("The Rendering engine works!")
     print("Rejoice!")
     ShowImage()
-    playsound('victory.mp3')
+    #playsound('victory.mp3')
+
+
+      
 
 
 # Uses OpenCV to change the format of the rendered image from PPM to JPG, and then uses Pillow (PIL) to show it.
