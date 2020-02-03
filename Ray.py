@@ -8,6 +8,7 @@ from RayTracerTest.Vec3 import Vec3 as vec3
 
 
 # The ray class has two vectors, the origin and the direction of the ray
+# in the form of P(t) = A + t*B
 class Ray:
     A: vec3
     B: vec3
