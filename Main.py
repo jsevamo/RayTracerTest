@@ -13,6 +13,19 @@ def Hit_Sphere(center: vec3, radius: float, r: ray):
 
     :rtype: bool
     """
+
+    # To add a sphere, we can use: (X - Cx)² + (Y - Cy)² + (Z - Cz)² = R²
+    # In vector form we have dot((P-C),(P-C)) = R²
+    # And since our ray is P(t) = A + t*B
+    # Then we have dot((A + t*B - C), (A + t*B - C) = R²
+    # Doing some algebra we then have:
+    # dot(B,B) t² + dot(B, A - C) * 2t + dot(A-C, A-C) - R² = 0
+    # which is an equation in the form of:
+    # aX² + bX + c = 0
+    # Now the discriminant is b² - 4*a*c
+    # if that is greater than zero, we have a valid solution, meaning
+    # the ray hit the sphere.
+
     oc: vec3 = r.GetOrigin - center
     a: float = vec3.DotProduct(r.GetDirection, r.GetDirection)
     b: float = 2.0 * vec3.DotProduct(oc, r.GetDirection)
@@ -109,7 +122,7 @@ def Main():
     #playsound('victory.mp3')
 
 
-      
+
 
 
 # Uses OpenCV to change the format of the rendered image from PPM to JPG, and then uses Pillow (PIL) to show it.
