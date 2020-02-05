@@ -47,7 +47,7 @@ def Hit_Sphere(center: vec3, radius: float, r: ray):
     if discriminant < 0:
         return -1.0
     else:
-        return -b - math.sqrt(discriminant) / (a * 2.0)
+        return (-b - math.sqrt(discriminant)) / (a * 2.0)
 
 
 # Returns a Vector3D with the color of the pixel based on where the ray is.
@@ -79,10 +79,10 @@ def GetColorOfPixels(r: ray):
     Direction: vec3 = r.GetDirection
     Direction.MakeUnitVector()
     unitDirection: vec3 = Direction
-    # Now we create a variable t. We make a standard graphics trick in which we take the unit direction,
+    # We make a standard graphics trick in which we take the unit direction,
     # add one and multiply by 0.5. This is to have 0 < t < 1 instead of -1 < t < 1
     # t starts with high values and decreases as the ray goes down the image with it's "y" value.
-    t: float = 0.5 * (unitDirection.y + 1)
+    t = 0.5 * (unitDirection.y + 1)
     # Color white to use
     color1: vec3 = vec3(1.0, 1.0, 1.0)
     # Color blueish to use
