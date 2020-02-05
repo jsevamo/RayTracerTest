@@ -1,11 +1,21 @@
 # /*******************************************************
 # * 2020 Juan Sebastián Vargas Molano j.sevamo@gmail.com
 # *******************************************************/
+
 from PIL import Image
 import cv2
-from RayTracerTest.Vec3 import Vec3 as vec3
-from RayTracerTest.Ray import Ray as ray
+from Vec3 import Vec3 as vec3
+from Ray import Ray as ray
 from playsound import playsound
+
+
+# /*******************************************************
+# from PIL import Image
+# import cv2
+# from RayTracerTest.Vec3 import Vec3 as vec3
+# from RayTracerTest.Ray import Ray as ray
+# from playsound import playsound
+# *******************************************************/
 
 
 def Hit_Sphere(center: vec3, radius: float, r: ray):
@@ -70,8 +80,8 @@ def Main():
     outputImage = open("renderedImage.ppm", "w+")
 
     # width (nx) and height (ny) of the output image.
-    nx: int = 400
-    ny: int = 200
+    nx: int = 400 * 1
+    ny: int = 200 * 1
 
     # create a ppm image header based on this: https://en.wikipedia.org/wiki/Netpbm#File_formats
     # print("P3\n" + str(nx) + " " + str(ny) + "\n255\n")
@@ -119,10 +129,7 @@ def Main():
     print("The Rendering engine works!")
     print("Rejoice!")
     ShowImage()
-    #playsound('victory.mp3')
-
-
-
+    # playsound('victory.mp3')
 
 
 # Uses OpenCV to change the format of the rendered image from PPM to JPG, and then uses Pillow (PIL) to show it.
@@ -134,3 +141,4 @@ def ShowImage():
 
 
 Main()
+
