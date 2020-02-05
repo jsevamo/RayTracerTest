@@ -7,6 +7,7 @@ import cv2
 from Vec3 import Vec3 as vec3
 from Ray import Ray as ray
 from playsound import playsound
+import math
 
 
 # /*******************************************************
@@ -21,7 +22,7 @@ from playsound import playsound
 def Hit_Sphere(center: vec3, radius: float, r: ray):
     """
 
-    :rtype: bool
+    :rtype: float
     """
 
     # To add a sphere, we can use: (X - Cx)² + (Y - Cy)² + (Z - Cz)² = R²
@@ -35,16 +36,18 @@ def Hit_Sphere(center: vec3, radius: float, r: ray):
     # Now the discriminant is b² - 4*a*c
     # if that is greater than zero, we have a valid solution, meaning
     # the ray hit the sphere.
+    # So then we return the complete solution for t, but the smallest value.
 
     oc: vec3 = r.GetOrigin - center
     a: float = vec3.DotProduct(r.GetDirection, r.GetDirection)
     b: float = 2.0 * vec3.DotProduct(oc, r.GetDirection)
     c: float = vec3.DotProduct(oc, oc) - radius * radius
     discriminant: float = b * b - 4 * a * c
-    if discriminant > 0:
-        return True
+
+    if discriminant < 0:
+        return -1.0
     else:
-        return False
+        return -b - math.sqrt(discriminant) / (a * 2.0)
 
 
 # Returns a Vector3D with the color of the pixel based on where the ray is.
@@ -54,10 +57,25 @@ def GetColorOfPixels(r: ray):
     :rtype: Vec3
 
     """
-    if Hit_Sphere(vec3(0, 0, -1), 0.5, r):
-        return vec3(1, 0, 0)
+    # if Hit_Sphere(vec3(0, 0, -1), 0.5, r):
+    #    return vec3(1, 0, 0)
 
-    # We first get the direction of the ray, make it a unit vector.
+    # To get the color of the pixel, we see first the value of t. It can be -1 or any number
+    # greater than 0 if it hit a sphere.
+    t: float = Hit_Sphere(vec3(0, 0, -1), 0.5, r)
+
+    # If the ray hit the sphere, we get the exact point of where it got it by using PointAtParamenter(), and
+    # subtract the sphere's position from the hit position in order to get the normal vector.
+    # We then make this normal vector an unit vector.
+    # And finally we make a standard graphics trick to have the normal be from -1 -> 1 to 0 -> 1
+    if t > 0.0:
+        N_notUnit: vec3 = r.PointAtParameter(t) - vec3(0, 0, -1)
+        N_notUnit.MakeUnitVector()
+        N: vec3 = N_notUnit
+        return vec3(N.x + 1, N.y + 1, N.z + 1) * 0.5
+
+
+    # We get the direction of the ray, make it a unit vector.
     Direction: vec3 = r.GetDirection
     Direction.MakeUnitVector()
     unitDirection: vec3 = Direction
@@ -141,4 +159,3 @@ def ShowImage():
 
 
 Main()
-
