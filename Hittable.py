@@ -1,9 +1,9 @@
-from dataclasses import dataclass
+# from dataclasses import dataclass
 from Ray import Ray as ray
 from Vec3 import Vec3 as vec3
 
 
-@dataclass
+# @dataclass
 class Hit_Record:
     t: float
     p: vec3
