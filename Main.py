@@ -2,12 +2,17 @@
 # * 2020 Juan Sebastián Vargas Molano j.sevamo@gmail.com
 # *******************************************************/
 
+# https://github.com/Keeeweee/Raytracing-In-One-Weekend-in-Python Change Main to draw first world
+
 from PIL import Image
 import cv2
 from RayTracerTest.Vec3 import Vec3 as vec3
 from RayTracerTest.Ray import Ray as ray
 from playsound import playsound
 import math
+from RayTracerTest.Sphere import *
+from RayTracerTest.HittableList import *
+from RayTracerTest.Hittable import *
 from RayTracerTest.Sphere import *
 
 
@@ -19,7 +24,9 @@ from RayTracerTest.Sphere import *
 # from playsound import playsound
 # *******************************************************/
 
+MAXRANGE: float = math.inf
 
+# Not used anymore. Used with GetColorOfPixels. Since we use a world now, this is in Sphere class
 def Hit_Sphere(center: vec3, radius: float, r: ray):
     """
 
@@ -92,14 +99,35 @@ def GetColorOfPixels(r: ray):
     return color1 * (1.0 - t) + color2 * t
 
 
+def GetColorOfPixelsWithWorld(r: ray, world: Hittable):
+    rec = [Hit_Record()]
+    if world.Hit(r, 0, MAXRANGE, rec):
+        return (rec[0].normal + vec3(1, 1, 1)) * 0.5
+    else:
+        Direction: vec3 = r.GetDirection
+        Direction.MakeUnitVector()
+        unitDirection: vec3 = Direction
+        # We make a standard graphics trick in which we take the unit direction,
+        # add one and multiply by 0.5. This is to have 0 < t < 1 instead of -1 < t < 1
+        # t starts with high values and decreases as the ray goes down the image with it's "y" value.
+        t = 0.5 * (unitDirection.y + 1)
+        # Color white to use
+        color1: vec3 = vec3(1.0, 1.0, 1.0)
+        # Color blueish to use
+        color2: vec3 = vec3(0.5, 0.7, 1.0)
+
+        # We make a linear interpolation between the two colors based on the value of t using (1-t)A + tB
+        return color1 * (1.0 - t) + color2 * t
+
+
 # Main function for the raytracer
 def Main():
     # This is how we can create a ppm image to write.
     outputImage = open("renderedImage.ppm", "w+")
 
     # width (nx) and height (ny) of the output image.
-    nx: int = 400 * 1
-    ny: int = 200 * 1
+    nx: int = 400 * 3
+    ny: int = 200 * 3
 
     # create a ppm image header based on this: https://en.wikipedia.org/wiki/Netpbm#File_formats
     # print("P3\n" + str(nx) + " " + str(ny) + "\n255\n")
@@ -109,6 +137,10 @@ def Main():
     horizontalSize: vec3 = vec3(4.0, 0.0, 0.0)
     verticalSize: vec3 = vec3(0.0, 2.0, 0.0)
     originOfCamera: vec3 = vec3(0.0, 0.0, 0.0)
+
+    world = HittableList()
+    world.append(Sphere(vec3(0, -100.5, -1), 100))
+    world.append(Sphere(vec3(0, 0, -1), 0.5))
 
     # The for loop that writes the pixels of the image. It writes from left to right
     # and then from top to bottom.
@@ -133,11 +165,26 @@ def Main():
             # we do indeed go through the whole plane.
             # Same goes for vertical size time V.
             r: ray = ray(originOfCamera, lowerLeftCorner + horizontalSize * u + verticalSize * v)
-            col: vec3 = GetColorOfPixels(r)
+            # col: vec3 = GetColorOfPixels(r)
+            col: vec3 = GetColorOfPixelsWithWorld(r, world)
 
             ir: int = int(255.99 * col.r)
             ig: int = int(255.99 * col.g)
             ib: int = int(255.99 * col.b)
+
+            if ir < 0:
+                ir = 0
+            if ir > 255:
+                ir = 255
+            if ig < 0:
+                ig = 0
+            if ig > 255:
+                ig = 255
+            if ib < 0:
+                ib = 0
+            if ib > 255:
+                ib = 255
+
             # print(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
             outputImage.write(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
 
@@ -147,7 +194,7 @@ def Main():
     print("The Rendering engine works!")
     print("Rejoice!")
     ShowImage()
-    # playsound('victory.mp3')
+    playsound('victory.mp3')
 
 
 # Uses OpenCV to change the format of the rendered image from PPM to JPG, and then uses Pillow (PIL) to show it.
@@ -159,6 +206,3 @@ def ShowImage():
 
 
 Main()
-
-
-
