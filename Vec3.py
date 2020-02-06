@@ -3,9 +3,9 @@ import math
 
 class Vec3:
     # This are the variables that will hold the 3 numbers for the Vector 3 class.
-    q1: float = None
-    q2: float = None
-    q3: float = None
+    # q1: float = None
+    # q2: float = None
+    # q3: float = None
 
     # Constructor for the class
     def __init__(self, e0: float, e1: float, e2: float):

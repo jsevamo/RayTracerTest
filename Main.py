@@ -8,6 +8,7 @@ from Vec3 import Vec3 as vec3
 from Ray import Ray as ray
 from playsound import playsound
 import math
+from Sphere import *
 
 
 # /*******************************************************
@@ -65,7 +66,7 @@ def GetColorOfPixels(r: ray):
     t: float = Hit_Sphere(vec3(0, 0, -1), 0.5, r)
 
     # If the ray hit the sphere, we get the exact point of where it got it by using PointAtParamenter(), and
-    # subtract the sphere's position from the hit position in order to get the normal vector.
+    # subtract the sphere's position from the hit position in order to get the normal vector at hit point.
     # We then make this normal vector an unit vector.
     # And finally we make a standard graphics trick to have the normal be from -1 -> 1 to 0 -> 1
     if t > 0.0:
@@ -73,7 +74,6 @@ def GetColorOfPixels(r: ray):
         N_notUnit.MakeUnitVector()
         N: vec3 = N_notUnit
         return vec3(N.x + 1, N.y + 1, N.z + 1) * 0.5
-
 
     # We get the direction of the ray, make it a unit vector.
     Direction: vec3 = r.GetDirection
@@ -159,3 +159,6 @@ def ShowImage():
 
 
 Main()
+
+
+
