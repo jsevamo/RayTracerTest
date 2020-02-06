@@ -14,5 +14,8 @@ class Hit_Record:
 class Hittable:
 
     def Hit(self, r: ray, t_min: float, t_max: float, rec: Hit_Record):
+        """
+        :rtype: bool
+        """
         pass
 

@@ -9,6 +9,7 @@ from Ray import Ray as ray
 from playsound import playsound
 import math
 from Sphere import *
+from Hittable_List import Hittable_List
 
 
 # /*******************************************************
@@ -160,5 +161,9 @@ def ShowImage():
 
 Main()
 
-
-
+l = []
+n = 10
+a = Hittable_List(l,n)
+a.list.append(12)
+a.list.append(100)
+print(a.list[1])
