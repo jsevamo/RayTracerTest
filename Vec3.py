@@ -3,15 +3,24 @@ import math
 
 class Vec3:
     # This are the variables that will hold the 3 numbers for the Vector 3 class.
-    q1: float = None
-    q2: float = None
-    q3: float = None
+    # q1: float = None
+    # q2: float = None
+    # q3: float = None
 
     # Constructor for the class
     def __init__(self, e0: float, e1: float, e2: float):
         self.q1 = e0
         self.q2 = e1
         self.q3 = e2
+
+    def SetX(self, x):
+        self.q1 = x
+
+    def SetY(self, x):
+        self.q2 = x
+
+    def SetZ(self, x):
+        self.q3 = x
 
     # Returning here X, Y, Z, and R G B value from coordinates[]
     @property
