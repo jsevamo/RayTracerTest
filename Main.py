@@ -4,15 +4,12 @@
 
 from PIL import Image
 import cv2
-from Vec3 import Vec3 as vec3
-from Ray import Ray as ray
+from RayTracerTest.Vec3 import Vec3 as vec3
+from RayTracerTest.Ray import Ray as ray
 from playsound import playsound
 import math
-from Sphere import *
-from HittableList import *
+from RayTracerTest.Sphere import *
 
-
-# https://github.com/Keeeweee/Raytracing-In-One-Weekend-in-Python/tree/c2c5025abe729b379bd1a640ff8e5bf19f19aeb7
 
 # /*******************************************************
 # from PIL import Image
@@ -55,84 +52,44 @@ def Hit_Sphere(center: vec3, radius: float, r: ray):
 
 
 # Returns a Vector3D with the color of the pixel based on where the ray is.
-def GetColorOfPixels(r: ray, world: Hittable):
+def GetColorOfPixels(r: ray):
     """
 
     :rtype: Vec3
 
     """
-    # # if Hit_Sphere(vec3(0, 0, -1), 0.5, r):
-    # #    return vec3(1, 0, 0)
-    #
-    # # To get the color of the pixel, we see first the value of t. It can be -1 or any number
-    # # greater than 0 if it hit a sphere.
-    # t: float = Hit_Sphere(vec3(0, 0, -1), 0.5, r)
-    #
-    # # If the ray hit the sphere, we get the exact point of where it got it by using PointAtParamenter(), and
-    # # subtract the sphere's position from the hit position in order to get the normal vector at hit point.
-    # # We then make this normal vector an unit vector.
-    # # And finally we make a standard graphics trick to have the normal be from -1 -> 1 to 0 -> 1
-    # if t > 0.0:
-    #     N_notUnit: vec3 = r.PointAtParameter(t) - vec3(0, 0, -1)
-    #     N_notUnit.MakeUnitVector()
-    #     N: vec3 = N_notUnit
-    #     return vec3(N.x + 1, N.y + 1, N.z + 1) * 0.5
-    #
-    # # We get the direction of the ray, make it a unit vector.
-    # Direction: vec3 = r.GetDirection
-    # Direction.MakeUnitVector()
-    # unitDirection: vec3 = Direction
-    # # We make a standard graphics trick in which we take the unit direction,
-    # # add one and multiply by 0.5. This is to have 0 < t < 1 instead of -1 < t < 1
-    # # t starts with high values and decreases as the ray goes down the image with it's "y" value.
-    # t = 0.5 * (unitDirection.y + 1)
-    # # Color white to use
-    # color1: vec3 = vec3(1.0, 1.0, 1.0)
-    # # Color blueish to use
-    # color2: vec3 = vec3(0.5, 0.7, 1.0)
-    #
-    # # We make a linear interpolation between the two colors based on the value of t using (1-t)A + tB
-    # return color1 * (1.0 - t) + color2 * t
+    # if Hit_Sphere(vec3(0, 0, -1), 0.5, r):
+    #    return vec3(1, 0, 0)
 
-    testing = open("testing.txt", "a")
+    # To get the color of the pixel, we see first the value of t. It can be -1 or any number
+    # greater than 0 if it hit a sphere.
+    t: float = Hit_Sphere(vec3(0, 0, -1), 0.5, r)
 
-    rec = [Hit_Record()]
+    # If the ray hit the sphere, we get the exact point of where it got it by using PointAtParamenter(), and
+    # subtract the sphere's position from the hit position in order to get the normal vector at hit point.
+    # We then make this normal vector an unit vector.
+    # And finally we make a standard graphics trick to have the normal be from -1 -> 1 to 0 -> 1
+    if t > 0.0:
+        N_notUnit: vec3 = r.PointAtParameter(t) - vec3(0, 0, -1)
+        N_notUnit.MakeUnitVector()
+        N: vec3 = N_notUnit
+        return vec3(N.x + 1, N.y + 1, N.z + 1) * 0.5
 
-    if world.Hit(r, 0, 1000, rec):
-        newNormal = rec[0].normal
-        if newNormal.x < 0.0:
-            newNormal.SetX(0)
-        if newNormal.y < 0.0:
-            newNormal.SetY(0)
-        if newNormal.z < 0.0:
-            newNormal.SetZ(0)
-        if newNormal.x > 1:
-            newNormal.SetX(1)
-        if newNormal.y > 1:
-            newNormal.SetY(1)
-        if newNormal.z > 1:
-            newNormal.SetZ(1)
+    # We get the direction of the ray, make it a unit vector.
+    Direction: vec3 = r.GetDirection
+    Direction.MakeUnitVector()
+    unitDirection: vec3 = Direction
+    # We make a standard graphics trick in which we take the unit direction,
+    # add one and multiply by 0.5. This is to have 0 < t < 1 instead of -1 < t < 1
+    # t starts with high values and decreases as the ray goes down the image with it's "y" value.
+    t = 0.5 * (unitDirection.y + 1)
+    # Color white to use
+    color1: vec3 = vec3(1.0, 1.0, 1.0)
+    # Color blueish to use
+    color2: vec3 = vec3(0.5, 0.7, 1.0)
 
-
-        testing.write(str(vec3((newNormal.x + 1)*0.5, (newNormal.y + 1)*0.5, (newNormal.z + 1)*0.5)) + "\n")
-        testing.close()
-        return vec3(rec[0].normal.x + 1, rec[0].normal.y + 1, rec[0].normal.z + 1) * 0.5
-    else:
-        # We get the direction of the ray, make it a unit vector.
-        Direction: vec3 = r.GetDirection
-        Direction.MakeUnitVector()
-        unitDirection: vec3 = Direction
-        # We make a standard graphics trick in which we take the unit direction,
-        # add one and multiply by 0.5. This is to have 0 < t < 1 instead of -1 < t < 1
-        # t starts with high values and decreases as the ray goes down the image with it's "y" value.
-        t = 0.5 * (unitDirection.y + 1)
-        # Color white to use
-        color1: vec3 = vec3(1.0, 1.0, 1.0)
-        # Color blueish to use
-        color2: vec3 = vec3(0.5, 0.7, 1.0)
-
-        # We make a linear interpolation between the two colors based on the value of t using (1-t)A + tB
-        return color1 * (1.0 - t) + color2 * t
+    # We make a linear interpolation between the two colors based on the value of t using (1-t)A + tB
+    return color1 * (1.0 - t) + color2 * t
 
 
 # Main function for the raytracer
@@ -152,10 +109,6 @@ def Main():
     horizontalSize: vec3 = vec3(4.0, 0.0, 0.0)
     verticalSize: vec3 = vec3(0.0, 2.0, 0.0)
     originOfCamera: vec3 = vec3(0.0, 0.0, 0.0)
-
-    world = HittableList()
-    world.append(Sphere(vec3(0, 0, -1), 0.5))
-    world.append(Sphere(vec3(0, -100.5, -1), 100))
 
     # The for loop that writes the pixels of the image. It writes from left to right
     # and then from top to bottom.
@@ -180,14 +133,11 @@ def Main():
             # we do indeed go through the whole plane.
             # Same goes for vertical size time V.
             r: ray = ray(originOfCamera, lowerLeftCorner + horizontalSize * u + verticalSize * v)
-            # col: vec3 = GetColorOfPixels(r)
-            col: vec3 = GetColorOfPixels(r, world)
+            col: vec3 = GetColorOfPixels(r)
 
-
-            ir: int = int(150.99 * col.r)
-            ig: int = int(150.99 * col.g)
-            ib: int = int(150.99 * col.b)
-
+            ir: int = int(255.99 * col.r)
+            ig: int = int(255.99 * col.g)
+            ib: int = int(255.99 * col.b)
             # print(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
             outputImage.write(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
 
@@ -209,3 +159,6 @@ def ShowImage():
 
 
 Main()
+
+
+

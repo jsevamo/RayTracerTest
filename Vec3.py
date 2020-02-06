@@ -13,15 +13,6 @@ class Vec3:
         self.q2 = e1
         self.q3 = e2
 
-    def SetX(self, x):
-        self.q1 = x
-
-    def SetY(self, x):
-        self.q2 = x
-
-    def SetZ(self, x):
-        self.q3 = x
-
     # Returning here X, Y, Z, and R G B value from coordinates[]
     @property
     def x(self):

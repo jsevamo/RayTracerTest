@@ -4,7 +4,7 @@
 # The ray parameter t is a real number .
 # Plug in a different t and p(t) moves the point along the ray.
 
-from Vec3 import Vec3 as vec3
+from RayTracerTest.Vec3 import Vec3 as vec3
 
 # from RayTracerTest.Vec3 import Vec3 as vec3
 
@@ -28,4 +28,4 @@ class Ray:
         return self.B
 
     def PointAtParameter(self,  t: float):
-        return self.A + t*self.B 
+        return self.A + (self.B * t)

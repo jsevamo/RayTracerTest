@@ -1,20 +1,18 @@
 # from dataclasses import dataclass
-from Ray import Ray as ray
-from Vec3 import Vec3 as vec3
-from abc import ABC, abstractmethod
-from typing import List
+from RayTracerTest.Ray import Ray as ray
+from RayTracerTest.Vec3 import Vec3 as vec3
 
 
 # @dataclass
 class Hit_Record:
-    def __init__(self, t: float = None, p: vec3 = None, normal: vec3 = None):
-        self.t = t
-        self.p = p
-        self.normal = normal
+    t: float
+    p: vec3
+    normal: vec3
 
 
-class Hittable(ABC):
+# noinspection PyMethodParameters
+class Hittable:
 
-    @abstractmethod
-    def Hit(self, r: ray, t_min: float, t_max: float, rec: List[Hit_Record]) -> bool:
+    def Hit(self, r: ray, t_min: float, t_max: float, rec: Hit_Record):
         pass
+
