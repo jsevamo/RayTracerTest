@@ -10,6 +10,7 @@ from playsound import playsound
 import math
 from Sphere import *
 from Hittable_List import Hittable_List
+from Hittable import Hittable
 
 
 # /*******************************************************
@@ -111,6 +112,12 @@ def Main():
     verticalSize: vec3 = vec3(0.0, 2.0, 0.0)
     originOfCamera: vec3 = vec3(0.0, 0.0, 0.0)
 
+    objectsToRenderList: Hittable = []
+    objectsToRenderList.append(Sphere(vec3(0, 0, -1), 0.5))
+    objectsToRenderList.append(Sphere(vec3(0, -100.5, -1), 100))
+    world: Hittable = Hittable_List(objectsToRenderList, 2)
+
+
     # The for loop that writes the pixels of the image. It writes from left to right
     # and then from top to bottom.
     for j in range(ny, 0, -1):
@@ -136,6 +143,9 @@ def Main():
             r: ray = ray(originOfCamera, lowerLeftCorner + horizontalSize * u + verticalSize * v)
             col: vec3 = GetColorOfPixels(r)
 
+            p: vec3 = r.PointAtParameter(2.0)
+            # col: vec3 = GetColorOfPixels()
+
             ir: int = int(255.99 * col.r)
             ig: int = int(255.99 * col.g)
             ib: int = int(255.99 * col.b)
@@ -160,10 +170,3 @@ def ShowImage():
 
 
 Main()
-
-l = []
-n = 10
-a = Hittable_List(l,n)
-a.list.append(12)
-a.list.append(100)
-print(a.list[1])
