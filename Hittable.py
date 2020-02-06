@@ -2,6 +2,7 @@
 from Ray import Ray as ray
 from Vec3 import Vec3 as vec3
 from abc import ABC, abstractmethod
+from typing import List
 
 
 # @dataclass
@@ -15,5 +16,5 @@ class Hit_Record:
 class Hittable(ABC):
 
     @abstractmethod
-    def Hit(self, r: ray, t_min: float, t_max: float, rec: Hit_Record) -> bool:
+    def Hit(self, r: ray, t_min: float, t_max: float, rec: List[Hit_Record]) -> bool:
         pass
