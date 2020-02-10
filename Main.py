@@ -172,6 +172,8 @@ def Main():
             ig: int = int(255.99 * col.g)
             ib: int = int(255.99 * col.b)
 
+            # TODO: There seems to be a bug where even when normalized the vectors sometimes go over 1 or less than 0.
+            # It's necessary to check later what is going on. For now, here's a quick fix:
             if ir < 0:
                 ir = 0
             if ir > 255:

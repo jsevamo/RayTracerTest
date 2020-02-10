@@ -11,7 +11,7 @@ class HittableList(Hittable):
     def append(self, objectToAdd: Hittable):
         self.objectList.append(objectToAdd)
 
-    def Hit(self, r: ray, t_min: float, t_max: float, rec: List[Hit_Record]) -> bool:
+    def Hit(self, r: ray, t_min: float, t_max: float, rec: [Hit_Record]) -> bool:
         hitAnything = False
         tempRec = [Hit_Record()]
         closestSoFar = t_max

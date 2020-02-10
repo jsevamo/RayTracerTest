@@ -4,6 +4,7 @@ from RayTracerTest.Ray import Ray as ray
 from RayTracerTest.Hittable import *
 import math
 
+# Sphere class that handles the rendering of a sphere, and the recording of hits. Came from HitSphere() in Main.
 
 class Sphere(hittable):
 
@@ -11,12 +12,12 @@ class Sphere(hittable):
         self.center: vec3 = cen
         self.radius: float = r
 
-    def RecordHit(self, t: float, r: ray, rec: List[Hit_Record]):
+    def RecordHit(self, t: float, r: ray, rec: [Hit_Record]):
         rec[0].t = t
         rec[0].p = r.PointAtParameter(rec[0].t)
         rec[0].normal = (rec[0].p - self.center) / self.radius
 
-    def Hit(self, r: ray, t_min: float, t_max: float, rec: List[Hit_Record]) -> bool:
+    def Hit(self, r: ray, t_min: float, t_max: float, rec: [Hit_Record]) -> bool:
         oc: vec3 = r.GetOrigin - self.center
         a: float = vec3.DotProduct(r.GetDirection, r.GetDirection)
         b: float = 2.0 * vec3.DotProduct(oc, r.GetDirection)
