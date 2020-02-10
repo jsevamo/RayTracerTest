@@ -2,7 +2,6 @@
 from RayTracerTest.Ray import Ray as ray
 from RayTracerTest.Vec3 import Vec3 as vec3
 from abc import ABC, abstractmethod
-from typing import List
 
 
 # This file is very important. It contains two classes: Hit_Record and Hittable. Hit_Record is used as an struct to
