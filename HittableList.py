@@ -3,7 +3,7 @@ from RayTracerTest.Hittable import *
 
 class HittableList(Hittable):
 
-    def __init__(self, objectList: [Hittable] = None):
+    def __init__(self, objectList: Hittable = None):
         if objectList is None:
             objectList = []
         self.objectList = objectList

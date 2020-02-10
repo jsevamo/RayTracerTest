@@ -172,20 +172,19 @@ def Main():
             ig: int = int(255.99 * col.g)
             ib: int = int(255.99 * col.b)
 
-            # TODO: There seems to be a bug where even when normalized the vectors sometimes go over 1 or less than 0.
             # It's necessary to check later what is going on. For now, here's a quick fix:
-            if ir < 0:
-                ir = 0
-            if ir > 255:
-                ir = 255
-            if ig < 0:
-                ig = 0
-            if ig > 255:
-                ig = 255
-            if ib < 0:
-                ib = 0
-            if ib > 255:
-                ib = 255
+            # if ir < 0:
+            #     ir = 0
+            # if ir > 255:
+            #     ir = 255
+            # if ig < 0:
+            #     ig = 0
+            # if ig > 255:
+            #     ig = 255
+            # if ib < 0:
+            #     ib = 0
+            # if ib > 255:
+            #     ib = 255
 
             # print(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
             outputImage.write(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
@@ -196,7 +195,7 @@ def Main():
     print("The Rendering engine works!")
     print("Rejoice!")
     ShowImage()
-    playsound('victory.mp3')
+    # playsound('victory.mp3')
 
 
 # Uses OpenCV to change the format of the rendered image from PPM to JPG, and then uses Pillow (PIL) to show it.
