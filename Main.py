@@ -15,7 +15,6 @@ from RayTracerTest.HittableList import *
 from RayTracerTest.Hittable import *
 from RayTracerTest.Sphere import *
 
-
 # /*******************************************************
 # from PIL import Image
 # import cv2
@@ -25,6 +24,7 @@ from RayTracerTest.Sphere import *
 # *******************************************************/
 
 MAXRANGE: float = math.inf
+
 
 # Not used anymore. Used with GetColorOfPixels. Since we use a world now, this is in Sphere class
 def Hit_Sphere(center: vec3, radius: float, r: ray):
@@ -126,8 +126,8 @@ def Main():
     outputImage = open("renderedImage.ppm", "w+")
 
     # width (nx) and height (ny) of the output image.
-    nx: int = 400 * 3
-    ny: int = 200 * 3
+    nx: int = 400
+    ny: int = 200
 
     # create a ppm image header based on this: https://en.wikipedia.org/wiki/Netpbm#File_formats
     # print("P3\n" + str(nx) + " " + str(ny) + "\n255\n")

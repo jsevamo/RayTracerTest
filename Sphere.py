@@ -19,17 +19,17 @@ class Sphere(hittable):
     def Hit(self, r: ray, t_min: float, t_max: float, rec: List[Hit_Record]) -> bool:
         oc: vec3 = r.GetOrigin - self.center
         a: float = vec3.DotProduct(r.GetDirection, r.GetDirection)
-        b: float = vec3.DotProduct(oc, r.GetDirection)
+        b: float = 2.0 * vec3.DotProduct(oc, r.GetDirection)
         c: float = vec3.DotProduct(oc, oc) - self.radius * self.radius
-        discriminant: float = (b * b) - (a * c)
+        discriminant: float = (b * b) - (4 * a * c)
 
         if discriminant > 0:
-            temp = (-b - math.sqrt(discriminant)) / a
+            temp = (-b - math.sqrt(discriminant)) / (a * 2.0)
             if t_min < temp < t_max:
                 self.RecordHit(temp, r, rec)
                 return True
 
-            temp = (-b + math.sqrt(discriminant)) / a
+            temp = (-b + math.sqrt(discriminant)) / (a * 2.0)
             if t_min < temp < t_max:
                 self.RecordHit(temp, r, rec)
                 return True
