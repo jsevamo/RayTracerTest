@@ -59,7 +59,7 @@ def Hit_Sphere(center: vec3, radius: float, r: ray):
         return (-b - math.sqrt(discriminant)) / (a * 2.0)
 
 
-# Not used anymore. Replaced by GetColorOfPixeslWithWorld
+# Not used anymore. Replaced by GetColorOfPixelsWithWorld
 # Returns a Vector3D with the color of the pixel based on where the ray is.
 def GetColorOfPixels(r: ray):
     """
