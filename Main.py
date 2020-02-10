@@ -23,6 +23,7 @@ from RayTracerTest.Sphere import *
 # from playsound import playsound
 # *******************************************************/
 
+# Used to determine t_max for our ray. For now it's at infinity!
 MAXRANGE: float = math.inf
 
 
@@ -58,6 +59,7 @@ def Hit_Sphere(center: vec3, radius: float, r: ray):
         return (-b - math.sqrt(discriminant)) / (a * 2.0)
 
 
+# Not used anymore. Replaced by GetColorOfPixeslWithWorld
 # Returns a Vector3D with the color of the pixel based on where the ray is.
 def GetColorOfPixels(r: ray):
     """
@@ -100,6 +102,7 @@ def GetColorOfPixels(r: ray):
 
 
 def GetColorOfPixelsWithWorld(r: ray, world: Hittable):
+    # If we hit something in the world, return the normal vector of that pixel and do the graphics trick.
     rec = [Hit_Record()]
     if world.Hit(r, 0, MAXRANGE, rec):
         return (rec[0].normal + vec3(1, 1, 1)) * 0.5
@@ -138,7 +141,9 @@ def Main():
     verticalSize: vec3 = vec3(0.0, 2.0, 0.0)
     originOfCamera: vec3 = vec3(0.0, 0.0, 0.0)
 
+    # Create a world of type HittableList to add HittableO Objects (Spheres)
     world = HittableList()
+    # Adds two spheres. The first one is so big we just see the top and looks like a floor. Cool!
     world.append(Sphere(vec3(0, -100.5, -1), 100))
     world.append(Sphere(vec3(0, 0, -1), 0.5))
 
