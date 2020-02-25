@@ -129,8 +129,8 @@ def Main():
     outputImage = open("renderedImage.ppm", "w+")
 
     # width (nx) and height (ny) of the output image.
-    nx: int = 400 * 5
-    ny: int = 200 * 5
+    nx: int = 400
+    ny: int = 200
 
     # create a ppm image header based on this: https://en.wikipedia.org/wiki/Netpbm#File_formats
     # print("P3\n" + str(nx) + " " + str(ny) + "\n255\n")
@@ -212,3 +212,5 @@ def ShowImage():
 
 
 Main()
+
+
