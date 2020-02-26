@@ -105,22 +105,21 @@ MAXRANGE: float = math.inf
 #     return color1 * (1.0 - t) + color2 * t
 
 def RandomInUnitSphere() -> vec3:
-    # p: vec3 = vec3(0, 0, 0)
 
     while True:
         p: vec3 = (vec3(RandomFloat(), RandomFloat(),
                         RandomFloat()) * 2.0) - vec3(1, 1, 1)
-        if p.SquaredLength >= 1.0:
+        if p.SquaredLength < 1.0:
             return p
 
 
 def GetColorOfPixelsWithWorld(r: ray, world: Hittable):
     # If we hit something in the world, return the normal vector of that pixel and do the graphics trick.
     rec = [Hit_Record()]
-    if world.Hit(r, 0, MAXRANGE, rec):
+    if world.Hit(r, 0.001, MAXRANGE, rec):
         # return (rec[0].normal + vec3(1, 1, 1)) * 0.5
         target: vec3 = rec[0].p + rec[0].normal + RandomInUnitSphere()
-        return GetColorOfPixelsWithWorld(ray(rec[0].p, target - rec[0].p), world) * 0.5
+        return GetColorOfPixelsWithWorld(ray(rec[0].p, target - rec[0].p), world) * 0.4
     else:
         Direction: vec3 = r.GetDirection
         Direction.MakeUnitVector()
@@ -146,11 +145,11 @@ def Main():
     outputImage = open("renderedImage.ppm", "w+")
 
     # width (nx) and height (ny) of the output image.
-    nx: int = 400
-    ny: int = 200
+    nx: int = 200
+    ny: int = 100
     # Number of samples per pixel for antialiasing. The more samples the better the effect
     # but takes longer to render.
-    samples: int = 1
+    samples: int = 30
 
     # create a ppm image header based on this: https://en.wikipedia.org/wiki/Netpbm#File_formats
     # print("P3\n" + str(nx) + " " + str(ny) + "\n255\n")
