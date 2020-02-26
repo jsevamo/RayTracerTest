@@ -17,6 +17,7 @@ from RayTracerTest.HittableList import *
 from RayTracerTest.Hittable import *
 from RayTracerTest.Sphere import *
 from RayTracerTest.Camera import *
+import sys
 
 # /*******************************************************
 # from PIL import Image
@@ -142,6 +143,9 @@ def GetColorOfPixelsWithWorld(r: ray, world: Hittable):
 
 # Main function for the raytracer
 def Main():
+
+    sys.setrecursionlimit(5000)
+
     # This is how we can create a ppm image to write.
     outputImage = open("renderedImage.ppm", "w+")
 
@@ -150,7 +154,7 @@ def Main():
     ny: int = 200
     # Number of samples per pixel for antialiasing. The more samples the better the effect
     # but takes longer to render.
-    ns: int = 10
+    samples: int = 50
 
     # create a ppm image header based on this: https://en.wikipedia.org/wiki/Netpbm#File_formats
     # print("P3\n" + str(nx) + " " + str(ny) + "\n255\n")
@@ -205,15 +209,17 @@ def Main():
                 # with values +1 or -1 of the original u and v coordinates using the RandomFloat function in Camera.
                 # This ensures each pixel now gets a color sample of slightly shifted rays.
                 # Everytime we get a color back we add it to the original color variable of the pixel,
-                # and then divide by the amount of rays we shot per pixel (ns) in order to average the colors and
+                # and then divide by the amount of rays we shot per pixel (samples) in order to average the colors and
                 # get proper antialiasing. Cool!
-                for s in range(0, ns, 1):
+                for s in range(0, samples, 1):
                     u: float = (i + RandomFloat(hasAntialiasing)) / nx
                     v: float = (j + RandomFloat(hasAntialiasing)) / ny
                     r: ray = cam.GetRay(u, v)
                     col = col + GetColorOfPixelsWithWorld(r, world)
 
-                col = col / ns
+                col = col / samples
+
+                col = vec3(math.sqrt(col.r), math.sqrt(col.g), math.sqrt(col.b))
             else:
                 # This is explained in a commented part above that is not used anymore.
                 u: float = (i + RandomFloat(hasAntialiasing)) / nx
@@ -246,9 +252,10 @@ def Main():
     outputImage.close()
     print("Image Rendered Correctly! Success!")
     print("The Rendering engine works!")
+    print("You suck a little bit less today!")
     print("Rejoice!")
     ShowImage()
-    # playsound('victory.mp3')
+    playsound('victory.mp3')
 
 
 # Uses OpenCV to change the format of the rendered image from PPM to JPG, and then uses Pillow (PIL) to show it.
