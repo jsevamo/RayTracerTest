@@ -30,9 +30,6 @@ import sys
 # Used to determine t_max for our ray. For now it's at infinity!
 MAXRANGE: float = math.inf
 
-# Variable to control if the rendering engine uses antialiasing. It's more computationally expensive. Turn on by using True.
-hasAntialiasing = True
-
 
 # # Not used anymore. Used with GetColorOfPixels. Since we use a world now, this is in Sphere class
 # def Hit_Sphere(center: vec3, radius: float, r: ray):
@@ -111,10 +108,10 @@ def RandomInUnitSphere() -> vec3:
     # p: vec3 = vec3(0, 0, 0)
 
     while True:
-        p: vec3 = (vec3(RandomFloat(hasAntialiasing), RandomFloat(hasAntialiasing), RandomFloat(hasAntialiasing)) * 2.0) - vec3(1, 1, 1)
+        p: vec3 = (vec3(RandomFloat(), RandomFloat(),
+                        RandomFloat()) * 2.0) - vec3(1, 1, 1)
         if p.SquaredLength >= 1.0:
             return p
-
 
 
 def GetColorOfPixelsWithWorld(r: ray, world: Hittable):
@@ -143,7 +140,6 @@ def GetColorOfPixelsWithWorld(r: ray, world: Hittable):
 
 # Main function for the raytracer
 def Main():
-
     sys.setrecursionlimit(5000)
 
     # This is how we can create a ppm image to write.
@@ -154,7 +150,7 @@ def Main():
     ny: int = 200
     # Number of samples per pixel for antialiasing. The more samples the better the effect
     # but takes longer to render.
-    samples: int = 50
+    samples: int = 1
 
     # create a ppm image header based on this: https://en.wikipedia.org/wiki/Netpbm#File_formats
     # print("P3\n" + str(nx) + " " + str(ny) + "\n255\n")
@@ -204,28 +200,21 @@ def Main():
             # So the color of each pixel now starts as black.
             col: vec3 = vec3(0, 0, 0)
 
-            if hasAntialiasing:
-                # If we use antialiasing, now for each given pixel we also have a loop that sends rays
-                # with values +1 or -1 of the original u and v coordinates using the RandomFloat function in Camera.
-                # This ensures each pixel now gets a color sample of slightly shifted rays.
-                # Everytime we get a color back we add it to the original color variable of the pixel,
-                # and then divide by the amount of rays we shot per pixel (samples) in order to average the colors and
-                # get proper antialiasing. Cool!
-                for s in range(0, samples, 1):
-                    u: float = (i + RandomFloat(hasAntialiasing)) / nx
-                    v: float = (j + RandomFloat(hasAntialiasing)) / ny
-                    r: ray = cam.GetRay(u, v)
-                    col = col + GetColorOfPixelsWithWorld(r, world)
-
-                col = col / samples
-
-                col = vec3(math.sqrt(col.r), math.sqrt(col.g), math.sqrt(col.b))
-            else:
-                # This is explained in a commented part above that is not used anymore.
-                u: float = (i + RandomFloat(hasAntialiasing)) / nx
-                v: float = (j + RandomFloat(hasAntialiasing)) / ny
+            # If we use antialiasing, now for each given pixel we also have a loop that sends rays
+            # with values +1 or -1 of the original u and v coordinates using the RandomFloat function in Camera.
+            # This ensures each pixel now gets a color sample of slightly shifted rays.
+            # Everytime we get a color back we add it to the original color variable of the pixel,
+            # and then divide by the amount of rays we shot per pixel (samples) in order to average the colors and
+            # get proper antialiasing. Cool!
+            for s in range(0, samples, 1):
+                u: float = (i + RandomFloat()) / nx
+                v: float = (j + RandomFloat()) / ny
                 r: ray = cam.GetRay(u, v)
                 col = col + GetColorOfPixelsWithWorld(r, world)
+
+            col = col / samples
+
+            col = vec3(math.sqrt(col.r), math.sqrt(col.g), math.sqrt(col.b))
 
             ir: int = int(255.99 * col.r)
             ig: int = int(255.99 * col.g)

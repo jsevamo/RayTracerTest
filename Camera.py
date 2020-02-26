@@ -4,11 +4,10 @@ from RayTracerTest.Ray import Ray as ray
 
 
 # This function is called in Main() in order to shift a bit the direction of the rays.
-def RandomFloat(hasAntialsing: bool) -> float:
-    if hasAntialsing:
-        return random.uniform(0, 1)
-    else:
-        return 0
+def RandomFloat() -> float:
+
+    return random.uniform(0, 1)
+
 
 
 # The camera class makes things more tidy. The explanation of what is going on here can be found in Main() where
