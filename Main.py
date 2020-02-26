@@ -27,6 +27,8 @@ from RayTracerTest.Camera import *
 # Used to determine t_max for our ray. For now it's at infinity!
 MAXRANGE: float = math.inf
 
+hasAntialiasing = True
+
 
 # # Not used anymore. Used with GetColorOfPixels. Since we use a world now, this is in Sphere class
 # def Hit_Sphere(center: vec3, radius: float, r: ray):
@@ -177,13 +179,19 @@ def Main():
 
             col: vec3 = vec3(0, 0, 0)
 
-            for s in range(0, ns, 1):
-                u: float = (i + RandomFloat()) / nx
-                v: float = (j + RandomFloat()) / ny
+            if hasAntialiasing:
+                for s in range(0, ns, 1):
+                    u: float = (i + RandomFloat(hasAntialiasing)) / nx
+                    v: float = (j + RandomFloat(hasAntialiasing)) / ny
+                    r: ray = cam.GetRay(u, v)
+                    col = col + GetColorOfPixelsWithWorld(r, world)
+
+                col = col / ns
+            else:
+                u: float = (i + RandomFloat(hasAntialiasing)) / nx
+                v: float = (j + RandomFloat(hasAntialiasing)) / ny
                 r: ray = cam.GetRay(u, v)
                 col = col + GetColorOfPixelsWithWorld(r, world)
-
-            col = col / ns
 
             ir: int = int(255.99 * col.r)
             ig: int = int(255.99 * col.g)
