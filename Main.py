@@ -106,6 +106,17 @@ hasAntialiasing = False
 #     # We make a linear interpolation between the two colors based on the value of t using (1-t)A + tB
 #     return color1 * (1.0 - t) + color2 * t
 
+def RandomInUnitSphere() -> vec3:
+    p: vec3 = vec3(0, 0, 0)
+
+    while True:
+        p = (vec3(RandomFloat(), RandomFloat(), RandomFloat()) * 2.0) - vec3(1, 1, 1)
+        if p.SquaredLength < 1:
+            break
+    return p
+
+
+
 
 def GetColorOfPixelsWithWorld(r: ray, world: Hittable):
     # If we hit something in the world, return the normal vector of that pixel and do the graphics trick.
@@ -249,5 +260,3 @@ def ShowImage():
 
 
 Main()
-
-# Test

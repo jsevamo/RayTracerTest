@@ -13,6 +13,8 @@ class Vec3:
         self.q2 = e1
         self.q3 = e2
 
+
+
     # Returning here X, Y, Z, and R G B value from coordinates[]
     @property
     def x(self):
