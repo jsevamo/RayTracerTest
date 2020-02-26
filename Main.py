@@ -4,6 +4,8 @@
 
 # https://github.com/Keeeweee/Raytracing-In-One-Weekend-in-Python Change Main to draw first world
 
+# TODO: CHECK HOW Hit_Records ARE BEING HANDLED WHEN RENDERING THE WORLD.
+
 from PIL import Image
 import cv2
 from RayTracerTest.Vec3 import Vec3 as vec3
@@ -27,7 +29,8 @@ from RayTracerTest.Camera import *
 # Used to determine t_max for our ray. For now it's at infinity!
 MAXRANGE: float = math.inf
 
-hasAntialiasing = True
+# Variable to control if the rendering engine uses antialiasing. It's more computationally expensive. Turn on by using True.
+hasAntialiasing = False
 
 
 # # Not used anymore. Used with GetColorOfPixels. Since we use a world now, this is in Sphere class
@@ -134,6 +137,8 @@ def Main():
     # width (nx) and height (ny) of the output image.
     nx: int = 400
     ny: int = 200
+    # Number of samples per pixel for antialiasing. The more samples the better the effect
+    # but takes longer to render.
     ns: int = 10
 
     # create a ppm image header based on this: https://en.wikipedia.org/wiki/Netpbm#File_formats
@@ -146,6 +151,7 @@ def Main():
     world.append(Sphere(vec3(0, -100.5, -1), 100))
     world.append(Sphere(vec3(0, 0, -1), 0.5))
 
+    # Created a camera to better handle rendering.
     cam = Camera()
 
     # The for loop that writes the pixels of the image. It writes from left to right
@@ -177,9 +183,19 @@ def Main():
             # # col: vec3 = GetColorOfPixels(r)
             # col: vec3 = GetColorOfPixelsWithWorld(r, world)
 
+            # Rendering now using the camera object and testing if we want to render with
+            # antialiasing or not.
+
+            # So the color of each pixel now starts as black.
             col: vec3 = vec3(0, 0, 0)
 
             if hasAntialiasing:
+                # If we use antialiasing, now for each given pixel we also have a loop that sends rays
+                # with values +1 or -1 of the original u and v coordinates using the RandomFloat function in Camera.
+                # This ensures each pixel now gets a color sample of slightly shifted rays.
+                # Everytime we get a color back we add it to the original color variable of the pixel,
+                # and then divide by the amount of rays we shot per pixel (ns) in order to average the colors and
+                # get proper antialiasing. Cool!
                 for s in range(0, ns, 1):
                     u: float = (i + RandomFloat(hasAntialiasing)) / nx
                     v: float = (j + RandomFloat(hasAntialiasing)) / ny
@@ -188,6 +204,7 @@ def Main():
 
                 col = col / ns
             else:
+                # This is explained in a commented part above that is not used anymore.
                 u: float = (i + RandomFloat(hasAntialiasing)) / nx
                 v: float = (j + RandomFloat(hasAntialiasing)) / ny
                 r: ray = cam.GetRay(u, v)

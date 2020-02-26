@@ -3,6 +3,7 @@ from RayTracerTest.Vec3 import Vec3 as vec3
 from RayTracerTest.Ray import Ray as ray
 
 
+# This function is called in Main() in order to shift a bit the direction of the rays.
 def RandomFloat(hasAntialsing: bool) -> float:
     if hasAntialsing:
         return random.uniform(0, 1)
@@ -10,6 +11,9 @@ def RandomFloat(hasAntialsing: bool) -> float:
         return 0
 
 
+# The camera class makes things more tidy. The explanation of what is going on here can be found in Main() where
+# this code used to be.
+# Now has a function that returns a ray given U and V coordinates.
 class Camera:
     def __init__(self):
         self.lowerLeftCorner: vec3 = vec3(-2.0, -1.0, -1.0)
