@@ -2,7 +2,7 @@
 # * 2020 Juan Sebastián Vargas Molano j.sevamo@gmail.com
 # *******************************************************/
 
-# https://github.com/Keeeweee/Raytracing-In-One-Weekend-in-Python Change Main to draw first world
+# https://github.com/Keeeweee/Raytracing-In-One-Weekend-in-Python Add randomInUnitSphere method
 
 # TODO: CHECK HOW Hit_Records ARE BEING HANDLED WHEN RENDERING THE WORLD.
 
@@ -30,7 +30,7 @@ from RayTracerTest.Camera import *
 MAXRANGE: float = math.inf
 
 # Variable to control if the rendering engine uses antialiasing. It's more computationally expensive. Turn on by using True.
-hasAntialiasing = False
+hasAntialiasing = True
 
 
 # # Not used anymore. Used with GetColorOfPixels. Since we use a world now, this is in Sphere class
@@ -107,14 +107,12 @@ hasAntialiasing = False
 #     return color1 * (1.0 - t) + color2 * t
 
 def RandomInUnitSphere() -> vec3:
-    p: vec3 = vec3(0, 0, 0)
+    # p: vec3 = vec3(0, 0, 0)
 
     while True:
-        p = (vec3(RandomFloat(), RandomFloat(), RandomFloat()) * 2.0) - vec3(1, 1, 1)
-        if p.SquaredLength < 1:
-            break
-    return p
-
+        p: vec3 = (vec3(RandomFloat(hasAntialiasing), RandomFloat(hasAntialiasing), RandomFloat(hasAntialiasing)) * 2.0) - vec3(1, 1, 1)
+        if p.SquaredLength >= 1.0:
+            return p
 
 
 
@@ -122,7 +120,9 @@ def GetColorOfPixelsWithWorld(r: ray, world: Hittable):
     # If we hit something in the world, return the normal vector of that pixel and do the graphics trick.
     rec = [Hit_Record()]
     if world.Hit(r, 0, MAXRANGE, rec):
-        return (rec[0].normal + vec3(1, 1, 1)) * 0.5
+        # return (rec[0].normal + vec3(1, 1, 1)) * 0.5
+        target: vec3 = rec[0].p + rec[0].normal + RandomInUnitSphere()
+        return GetColorOfPixelsWithWorld(ray(rec[0].p, target - rec[0].p), world) * 0.5
     else:
         Direction: vec3 = r.GetDirection
         Direction.MakeUnitVector()
@@ -239,7 +239,7 @@ def Main():
             # if ib > 255:
             #     ib = 255
 
-            # print(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
+            print(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
             outputImage.write(str(ir) + " " + str(ig) + " " + str(ib) + "\n")
 
     # Makes sure to close the output image.
