@@ -145,11 +145,11 @@ def Main():
     outputImage = open("renderedImage.ppm", "w+")
 
     # width (nx) and height (ny) of the output image.
-    nx: int = 200
-    ny: int = 100
+    nx: int = 600
+    ny: int = 300
     # Number of samples per pixel for antialiasing. The more samples the better the effect
     # but takes longer to render.
-    samples: int = 30
+    samples: int = 50
 
     # create a ppm image header based on this: https://en.wikipedia.org/wiki/Netpbm#File_formats
     # print("P3\n" + str(nx) + " " + str(ny) + "\n255\n")
